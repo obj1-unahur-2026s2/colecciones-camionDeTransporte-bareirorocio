@@ -1,9 +1,65 @@
+import cosas.*
 import camion.*
 
-describe "group of test for camion" {
+describe "Test del camion"{
+    
+test "prueba completa del camion" {
+    // Preparar los objetos
+    bumblebee.cambiarTransformacion(auto)
+    arenaAGranel.nuevoPeso(150)
+    paqueteDeLadrillos.cantidadDeLadrillos(80)
+    embalajeDeSeguridad.cambiarCosa(paqueteDeLadrillos)
 
-  test "first test" {
-    assert.that(true)
-  }
+    // Cargar el camion
+    camion.cargar(bumblebee)
+    assert.equals(30, bumblebee.peligrosidad())
+    camion.cargar(arenaAGranel)
+    camion.cargar(bateriaAntiAerea)
+    camion.cargar(embalajeDeSeguridad)
+
+    // Peso total del camion
+    assert.equals(2400, camion.peso())
+
+    // Todos los pesos son pares
+    assert.that(camion.todosLosPesosSonPares())
+
+    // Consultar si tiene una cosa de determinado peso
+    assert.that(camion.tienePeso(800))
+    assert.notThat(camion.tienePeso(150))
+
+    // Primera cosa con peligrosidad 30
+    assert.equals(bumblebee, camion.objetoConPeligrosidad(30))
+
+    // Cosas que superan peligrosidad 15
+    assert.equals(
+        [bumblebee, bateriaAntiAerea],
+        camion.peligrosidadMayorA(15)
+    )
+
+    // Cosas más peligrosas que la arena
+    assert.equals(
+        [bumblebee, bateriaAntiAerea],
+        camion.superanNivelDePeligrosidad(arenaAGranel)
+    )
+
+    // Exceso de peso
+    assert.notThat(camion.excesoDePeso())
+
+    // Puede circular con peligrosidad máxima 100
+    assert.that(camion.puedeCircularEnRuta(100))
+
+    // No puede circular con peligrosidad máxima 50
+    assert.notThat(camion.puedeCircularEnRuta(50))
+
+    // Tiene alguna cosa entre 130 y 170 kg
+    assert.that(camion.pesaEntre(130, 170))
+
+    // Objeto más pesado
+    assert.equals(bumblebee, camion.objetoMasPesado())
+
+    // Cantidad total de bultos
+    assert.equals(7, camion.cantidadTotalDeBultos())
+}
 
 }
+

@@ -5,6 +5,8 @@ object cosas {
 object knightRider{
     method peso()= 500
     method peligrosidad()=10
+    method bultoOcupado()= 1
+    method consecuenciaDeCarga(){}
 
 }
 
@@ -14,6 +16,10 @@ object bumblebee{
     method peligrosidad() = transformadoEn.peligrosidad()
     method cambiarTransformacion(transformarA){
         transformadoEn = transformarA 
+    }
+    method bultoOcupado()= 2
+    method consecuenciaDeCarga() {
+        self.cambiarTransformacion(robot)
     }
 }
 
@@ -32,6 +38,22 @@ object paqueteDeLadrillos{
     method cantidadDeLadrillos(nuevaCantidad){
         ladrillos = nuevaCantidad
     }
+    method bultoOcupado(){
+        if(ladrillos == 100){
+            return 1
+        }
+        else{
+            if(ladrillos <= 300 && ladrillos >= 101){
+                return 2
+            }
+            else{
+                return 3
+            }
+        }
+    }
+    method consecuenciaDeCarga(){
+        ladrillos = ladrillos + 12
+    }
 }
 
 object arenaAGranel{
@@ -41,10 +63,14 @@ object arenaAGranel{
         peso = pesoNuevo
     }
     method peligrosidad()=1
+    method bultoOcupado()= 1
+    method consecuenciaDeCarga(){
+        peso = peso - 10
+    }
 }
 
 object bateriaAntiAerea{
-    var tieneMisiles = true
+    var tieneMisiles = false
     method peso() {
         if(tieneMisiles){
             return 300
@@ -61,9 +87,20 @@ object bateriaAntiAerea{
             return 0 
         }
     }
-    method noTieneMisiles(){
-        tieneMisiles = false
+    method cargarMisiles(){
+        tieneMisiles = true
     }
+    method bultoOcupado(){
+        if(tieneMisiles){
+            return 2
+        }
+        else{
+            return 1
+        }
+    }
+    method consecuenciaDeCarga() {
+    self.cargarMisiles()
+}
 }
 
 object contenedorPortuario{
@@ -89,6 +126,13 @@ object contenedorPortuario{
     method verLasCosas(){
         return cosas
     }
+    method bultoOcupado(){
+        return 1 + cosas.sum{c => c.bultoOcupado()}
+    }
+    method consecuenciaDeCarga() {
+    cosas.forEach({ c => c.consecuenciaDeCarga() }) 
+    // recorre la coleccion y cada uno de los elementos hace consecuencia de carga.
+}
 }
 
 object residuosRadioactivos{
@@ -96,6 +140,10 @@ object residuosRadioactivos{
     method peso()= peso 
     method cambiarPeso(nuevoPeso){peso = nuevoPeso}
     method peligrosidad()=200
+    method bultoOcupado()= 1
+    method consecuenciaDeCarga() {
+    peso += 15
+}
 }
 
 object embalajeDeSeguridad{
@@ -107,5 +155,7 @@ object embalajeDeSeguridad{
     method peligrosidad(){
         return cosa.peligrosidad() / 2
     }
+    method bultoOcupado()= 2
+    method consecuenciaDeCarga() {}
 }
 

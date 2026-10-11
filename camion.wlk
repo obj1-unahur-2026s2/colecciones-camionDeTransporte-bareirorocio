@@ -1,8 +1,9 @@
 object camion {
     const cosas = []
-    method cargar(objetoACargar){
-        cosas.add(objetoACargar)
-
+   method cargar(objetoACargar) {
+    cosas.add(objetoACargar)
+    objetoACargar.consecuenciaDeCarga()
+    // carga los objetos y despues aplica su consecuencia de carga.
     }
     method descargar(objetoADescargar){
         cosas.remove(objetoADescargar)
@@ -40,6 +41,9 @@ object camion {
     }
     method objetoMasPesado(){
         return cosas.max{c => c.peso()}
+    }
+    method cantidadTotalDeBultos(){
+        return cosas.sum{c=> c.bultoOcupado()}
     }
 
 
